@@ -10,21 +10,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/webjars/**");
+		web.ignoring().antMatchers("/webjars/**", "/css/**", "/img/**");
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/login").permitAll()
-			.anyRequest().authenticated()
-			
-			.and().formLogin().loginPage("/login").defaultSuccessUrl("/hello");
+		.antMatchers("/login", "/", "/register").permitAll()
+		.anyRequest().authenticated()
+		.and().formLogin()
+        .loginPage("/login").defaultSuccessUrl("/hello");
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password("password").roles("ADMIN");
